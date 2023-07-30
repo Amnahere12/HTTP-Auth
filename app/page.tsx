@@ -1,4 +1,4 @@
-// app/index.tsx
+'use client'
 import Layout from "./layout";
 import Login from "../components/Login";
 import Signup from "../components/Signup";
