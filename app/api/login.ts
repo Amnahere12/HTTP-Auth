@@ -1,24 +1,23 @@
-
+// app/api/login.ts
 import { NextApiRequest, NextApiResponse } from "next";
+import db from '@/JSON/db.json'
 
 interface LoginRequestData {
   email: string;
   password: string;
 }
 
-interface LoginResponseData {
-  message: string;
-}
-
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { email, password } = req.body as LoginRequestData;
 
-    
-    if (email === "test@example.com" && password === "password") {
+    const user = db.users.find(
+      (user:any) => user.email === email && user.password === password
+    );
+
+    if (user) {
       // Successful login
-      const response: LoginResponseData = { message: "Login successful!" };
-      return res.status(200).json(response);
+      return res.status(200).json({ message: "Login successful!" });
     } else {
       // Failed login
       return res.status(401).json({ error: "Invalid credentials." });
