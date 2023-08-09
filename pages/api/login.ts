@@ -1,6 +1,6 @@
-// app/api/login.ts
+// pages/api/login.ts
 import { NextApiRequest, NextApiResponse } from "next";
-import db from '@/JSON/db.json'
+import { findUserByEmail } from "./users";
 
 interface LoginRequestData {
   email: string;
@@ -11,11 +11,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "POST") {
     const { email, password } = req.body as LoginRequestData;
 
-    const user = db.users.find(
-      (user:any) => user.email === email && user.password === password
-    );
+    // Check if the user exists in the users list
+    const user = findUserByEmail(email);
 
-    if (user) {
+    if (user && user.password === password) {
       // Successful login
       return res.status(200).json({ message: "Login successful!" });
     } else {
